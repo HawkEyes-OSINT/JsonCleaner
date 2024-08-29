@@ -1,6 +1,7 @@
 import os
 import json
 import time
+import ijson
 
 
 def json_file_exists(file_path):
@@ -56,35 +57,23 @@ def clean_json_file(file_path, keys_to_keep, new_key_names):
     """
     # Open the original file
     file_name = file_path.split('/')[-1].split('.')[0]
-    try:
-        with open(file_path, 'r') as json_file:
-            data = json.load(json_file)
-        print(f"\033[92m[+] File {file_name}.json loaded successfully\033[0m")
-    except json.JSONDecodeError as e:
-        print(f"\033[91m[-] Error decoding {file_name}.json\033[0m")
-        print(e)
-        return
 
-    # Create a new list of dictionaries with only the desired keys
+    # Create a new list to store the cleaned data
     new_data = []
-    start_time = time.time()
-    total_items = len(data)
-    processed_items = 0
 
-    for item in data:
-        # Extract items
-        try:
-            new_item = _extract_values(item, keys_to_keep, new_key_names)
-            new_data.append(new_item)
-            processed_items += 1
-            elapsed_time = time.time() - start_time
-            remaining_time = int((elapsed_time / processed_items) * (total_items - processed_items))
-            countdown_timer = f"Estimated time remaining: {remaining_time // 60:02d}:{remaining_time % 60:02d}"
-            print(f"\r{countdown_timer}", end="", flush=True)
-        except Exception as e:
-            print(f"\033[91m[-] Error: {e}\033[0m")
-
-    print("\n\033[92m[+]Operation completed.\033[0m")
+    # Use ijson to stream the JSON data
+    with open(file_path, 'rb') as json_file:
+        parser = ijson.parse(json_file)
+        for prefix, event, value in parser:
+            if event == 'map_key':
+                continue
+            if prefix == '':
+                # Extract items
+                try:
+                    new_item = _extract_values(value, keys_to_keep, new_key_names)
+                    new_data.append(new_item)
+                except Exception as e:
+                    print(f"\033[91m[-] Error: {e}\033[0m")
 
     # Write the new data to a new file
     with open(f'outputs/{file_name}_clean.json', 'w') as new_file:
