@@ -18,34 +18,22 @@ JSON Cleaner is a Python-based command-line tool that allows you to create a new
 
 2. Navigate to the project directory:
 
-    cd JsonCleaner
+       cd JsonCleaner
 
 
 3. Install the required dependencies:
 
-    pip install -rrequirements.txt
+        pip install -rrequirements.txt
 
 
 ## Usage
 
 1. Run the `JsonCleaner-terminal.py` script:
 
-    python JsonCleaner-terminal.py
+        python JsonCleaner-terminal.py
 
 
 2. Enter the path to your JSON file when prompted.
-3. Specify the keys you want to keep in the new file, separated by commas. To rename a key, use the format `key AS new_name`.
+3. Specify the keys you want to keep in the new file, separated by commas. To rename a key, use the format `key AS new_name, key2, key3 AS new_name2`.
 4. The script will create a new JSON file with the specified keys in the `outputs` directory.
 
-## Example
-
-Enter the path to your JSON file: /path/to/data.json
-Enter the keys: name, age AS user_age, email
-
-Keys to Keep New Key Name
-
-name name
-age user_age
-email email
-
-New file data_clean.json created successfully and is in your outputs folder
