@@ -13,7 +13,7 @@ JSON Cleaner is a Python-based command-line tool that allows you to create a new
 
 1. Clone the repository:
     
-    git clone https://github.com/HawkEyes-OSINT/JsonCleaner.git
+        git clone https://github.com/HawkEyes-OSINT/JsonCleaner.git
 
 
 2. Navigate to the project directory:
